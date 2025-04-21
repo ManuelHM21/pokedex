@@ -9,14 +9,20 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Use Node.js 18.x
+      - name: Usar Node.js 18.x
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
 
-      # pipeline actions
+      - name: Instalar gcov
+        run: sudo apt-get install -y gcov
+
       - run: npm install
       - run: npm run test:cov
+
+      - name: Depurar Archivos de Cobertura
+        run: ls -l coverage/pokedex-angular/
+
       - run: ./node_modules/.bin/codecov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
