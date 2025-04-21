@@ -14,8 +14,10 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Instalar gcov
-        run: sudo apt-get install -y gcov
+      - name: Actualizar lista de paquetes e instalar gcov
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcov
 
       - run: npm install
       - run: npm run test:cov
