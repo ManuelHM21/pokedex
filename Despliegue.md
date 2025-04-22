@@ -58,89 +58,77 @@ Crea un archivo `vercel.json` en la raíz de tu proyecto para configurar los enc
 }
 ```
 
-Esta configuración proporciona protección contra varios tipos de ataques web comunes y permite el acceso a recursos externos necesarios como Google Fonts y la API de PokeAPI.
-
 ### 3. Despliegue en Vercel
 
-#### Opción 1: Despliegue desde la Interfaz Web
+#### Opción 1: Interfaz Web
 
 1. Inicia sesión en [Vercel](https://vercel.com)
 2. Haz clic en "New Project"
-3. Importa tu repositorio de Git (GitHub, GitLab o Bitbucket)
-4. Configura el proyecto:
+3. Importa tu repositorio
+4. Configura:
    - Framework Preset: Angular
-   - Build Command: `npm run build` (o el comando de construcción que uses)
-   - Output Directory: `dist/[nombre-de-tu-proyecto]`
+   - Build Command: `npm run build`
 5. Haz clic en "Deploy"
 
-#### Opción 2: Despliegue desde la Línea de Comandos
+#### Opción 2: Línea de Comandos
 
-1. Instala la CLI de Vercel:
-   ```bash
-   npm install -g vercel
-   ```
+```bash
+# Instalar CLI
+npm install -g vercel
 
-2. Inicia sesión en tu cuenta:
-   ```bash
-   vercel login
-   ```
+# Iniciar sesión
+vercel login
 
-3. Despliega la aplicación:
-   ```bash
-   vercel
-   ```
-
-4. Sigue las instrucciones interactivas para configurar el proyecto.
+# Desplegar aplicación
+vercel
+```
 
 ### 4. Verificación del Despliegue
 
-Una vez completado el despliegue, Vercel proporcionará una URL para acceder a tu aplicación (por ejemplo, `https://pokedex-username.vercel.app`).
+- Abre la URL proporcionada por Vercel
+- Verifica carga de datos desde la API
+- Asegúrate que no haya errores de seguridad
 
-Para verificar que todo funciona correctamente:
+### 5. Dominio Personalizado (Opcional)
 
-1. Abre la URL proporcionada en tu navegador
-2. Comprueba que los datos de la API de PokeAPI se cargan correctamente
-3. Verifica que los estilos y fuentes se están aplicando correctamente
-4. Utiliza las herramientas de desarrollo del navegador para confirmar que no hay errores de seguridad
+1. Ve a "Settings" > "Domains"
+2. Agrega tu dominio personalizado
+3. Configura los registros DNS según las instrucciones
 
-### 5. Configuración de Dominio Personalizado (Opcional)
+### 6. Problemas Comunes
 
-Si deseas usar un dominio personalizado para tu aplicación:
+#### CSP
 
-1. En el dashboard de Vercel, selecciona tu proyecto
-2. Ve a "Settings" > "Domains"
-3. Agrega tu dominio personalizado
-4. Sigue las instrucciones para configurar los registros DNS
+Ajusta el archivo `vercel.json` si ves errores en consola.
 
-## Solución de Problemas Comunes
+#### Error 500
 
-### Errores de Política de Seguridad de Contenido (CSP)
+- Revisa logs en Vercel
+- Verifica conexión con la API
 
-Si ves errores relacionados con CSP en la consola del navegador, es posible que necesites ajustar las directivas en el archivo `vercel.json` para permitir recursos adicionales.
+#### Recursos No Cargados
 
-### Error 500 Internal Server Error
+- Verifica configuración CSP
+- Revisa las URLs de los recursos
 
-Si la aplicación muestra un error 500:
+### 7. Actualizaciones
 
-1. Verifica los logs de despliegue en el dashboard de Vercel
-2. Comprueba la conexión con la API de PokeAPI
-3. Asegúrate de que las directivas CSP permiten todas las conexiones necesarias
-
-### Recursos No Cargados
-
-Si algunos recursos no se cargan (imágenes, fuentes, etc.):
-
-1. Verifica la configuración CSP para asegurarte de que los dominios de origen están permitidos
-2. Comprueba las URLs de los recursos para asegurarte de que son correctas
-
-## Mantenimiento y Actualizaciones
-
-Para actualizar tu aplicación desplegada:
-
-1. Realiza los cambios en tu código
-2. Haz commit y push a tu repositorio
-3. Vercel detectará automáticamente los cambios y desplegará la nueva versión
+1. Haz cambios en tu código
+2. Haz `git push`
+3. Vercel desplegará automáticamente los cambios
 
 ---
 
-Con esta guía, deberías poder desplegar exitosamente tu aplicación PokeDex en Vercel con las configuraciones de seguridad apropiadas. Si tienes alguna pregunta o problema durante el proceso de despliegue, consulta la [documentación oficial de Vercel](https://vercel.com/docs) o ponte en contacto con el equipo de soporte.
+#### ¿Qué significa cada encabezado de seguridad y por qué se usa?
+
+- **Content-Security-Policy (CSP)**: Define qué fuentes de contenido son válidas. Previene ataques como XSS (Cross Site Scripting) al restringir desde dónde se pueden cargar scripts, estilos, imágenes, etc.
+
+- **X-Frame-Options**: Indica si el contenido de tu sitio puede ser mostrado dentro de un `<iframe>`. La opción `"SAMEORIGIN"` evita ataques de clickjacking al permitir sólo a tu mismo dominio embeber la página.
+
+- **X-Content-Type-Options**: Evita que los navegadores intenten adivinar el tipo de contenido (MIME sniffing), lo cual puede abrir puertas a ataques. `"nosniff"` es la configuración recomendada.
+
+- **Referrer-Policy**: Controla cuánta información del encabezado `Referer` se envía al navegar entre sitios. `"strict-origin-when-cross-origin"` protege la privacidad del usuario al no enviar información sensible del origen completo.
+
+- **Permissions-Policy**: Especifica qué APIs del navegador están disponibles para el sitio. En este caso, se bloquea el acceso a cámara, micrófono, geolocalización y seguimiento por cohortes.
+
+Estos encabezados refuerzan la seguridad de la aplicación protegiendo contra ataques comunes del lado del cliente y mejorando la privacidad del usuario.

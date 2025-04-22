@@ -14,17 +14,6 @@ jobs:
         with:
           node-version: 18.x
 
-      - name: Actualizar lista de paquetes e instalar gcov
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcov
-
       - run: npm install
       - run: npm run test:cov
 
-      - name: Depurar Archivos de Cobertura
-        run: ls -l coverage/pokedex-angular/
-
-      - run: ./node_modules/.bin/codecov
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
