@@ -2,6 +2,10 @@
 
 Este documento describe el proceso para desplegar la aplicación PokeDex en la nube usando Vercel, incluyendo la configuración de seguridad necesaria.
 
+<p align="center">
+  <img src="/diagrama.png" alt="Arquitectura de la app" width="900"/>
+</p>
+
 ## Prerrequisitos
 
 - Cuenta en [Vercel](https://vercel.com)
